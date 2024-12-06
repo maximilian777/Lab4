@@ -47,7 +47,7 @@ public class MenuControl
      * Is this board playable?
      * @return The playability of the board
      */
-    public boolean isBoardCorrect() { return sudokuControl.isValid(); }
+    public boolean isBoardCorrect() { return sudokuControl.isPlayable(); }
 
     /**
      * Clears all moves

@@ -2,7 +2,7 @@ package Lab4;
 
 import Lab4.controllers.MenuControl;
 import Lab4.controllers.NumberInput;
-import Lab4.controllers.SudokuControlPanelController;
+import Lab4.controllers.SudokuControlPanelControl;
 import Lab4.controllers.SudokuControl;
 import Lab4.models.MenuModel;
 import Lab4.models.SudokuModel;
@@ -26,11 +26,11 @@ public class SudokuApp extends Application
         SudokuControl sudokuControl = new SudokuControl(sudokuModel);
         MenuControl menuControl = new MenuControl(menuModel, sudokuControl, stage);
         NumberInput numberInput = new NumberInput(sudokuControl);
-        SudokuControlPanelController sudokuControlPanelController = new SudokuControlPanelController(sudokuControl);
+        SudokuControlPanelControl sudokuControlPanelControl = new SudokuControlPanelControl(sudokuControl);
 
         SudokuView sudokuView = new SudokuView(sudokuControl, stage);
         MenuView menuView = new MenuView(menuControl, stage);
-        SudokuControlPanelView controlPanelView = new SudokuControlPanelView(sudokuControlPanelController);
+        SudokuControlPanelView controlPanelView = new SudokuControlPanelView(sudokuControlPanelControl);
         NumberInputView numberInputView = new NumberInputView(numberInput);
 
         BorderPane root = new BorderPane();

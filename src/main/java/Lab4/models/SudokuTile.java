@@ -20,7 +20,7 @@ public class SudokuTile extends Label implements Serializable
     }
 
     /**
-     * Values to bind the label size to
+     * Bind the values of the label size
      * @param w The width
      * @param h The height
      */
@@ -30,20 +30,12 @@ public class SudokuTile extends Label implements Serializable
         prefHeightProperty().bind(h);
     }
 
-    /**
-     * Set the label internal value
-     * @param value
-     */
     public void setValue(int value)
     {
         this.value = value;
         setText(value == 0 ? "" : String.valueOf(value));
     }
 
-    /**
-     * Gets the internal label value
-     * @return The label value
-     */
     public int getValue() {
         return value;
     }

@@ -5,11 +5,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
-import Lab4.controllers.SudokuControlPanelController;
+import Lab4.controllers.SudokuControlPanelControl;
 
 public class SudokuControlPanelView extends VBox
 {
-    public SudokuControlPanelView(SudokuControlPanelController controller)
+    public SudokuControlPanelView(SudokuControlPanelControl controller)
     {
         setAlignment(Pos.CENTER);
         setStyle("-fx-padding: 15px;");
@@ -17,8 +17,8 @@ public class SudokuControlPanelView extends VBox
         Button check = new Button("Check");
         check.setOnAction(_ -> {
             if (controller.isBoardPlayable())
-                Notification.notify(Alert.AlertType.INFORMATION, "Hint", "Your board looks good so far!");
-            else Notification.notify(Alert.AlertType.ERROR, "Hint", "Your board is not correct.");
+                Notification.notify(Alert.AlertType.INFORMATION, "Hint", "The board is playable");
+            else Notification.notify(Alert.AlertType.ERROR, "Hint", "The board is not playable");
         });
 
         Button hint = new Button("Hint");

@@ -53,7 +53,7 @@ public class SudokuControl
      * Is the board playable?
      * @return Playability of the board
      */
-    public boolean isValid() { return sudokuModel.isValid(); }
+    public boolean isPlayable() { return sudokuModel.isPlayable(); }
 
     /**
      * Clears all the users' previous moves

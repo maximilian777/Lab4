@@ -8,7 +8,7 @@ import Lab4.models.Difficulty;
 
 public class MenuView extends MenuBar
 {
-    public MenuView(MenuControl controller, Stage stage)
+    public MenuView(MenuControl menuControl, Stage stage)
     {
         Menu file = new Menu("File");
         Menu game = new Menu("Game");
@@ -20,14 +20,14 @@ public class MenuView extends MenuBar
 
         load.setOnAction(_ -> {
             try {
-                controller.loadGame();
+                menuControl.loadGame();
             } catch (Exception _) {
-                Notification.notify(Alert.AlertType.ERROR, "Load save game", "The save game could not be loaded.");
+                Notification.notify(Alert.AlertType.ERROR, "Load save game", "Saved game could not be loaded.");
             }
         });
         save.setOnAction(_ -> {
             try {
-                controller.saveGame();
+                menuControl.saveGame();
             } catch (Exception _) {
                 Notification.notify(Alert.AlertType.ERROR, "Save save game", "The save game could not be saved.");
             }
@@ -48,22 +48,22 @@ public class MenuView extends MenuBar
         easy.setSelected(true);
         medium.setToggleGroup(diffs);
         hard.setToggleGroup(diffs);
-        newGame.setOnAction(_ -> controller.newGame(getSelectedDifficulty(diffs)));
+        newGame.setOnAction(_ -> menuControl.newGame(getSelectedDifficulty(diffs)));
 
         difficulty.getItems().addAll(easy, medium, hard);
         game.getItems().addAll(newGame, difficulty);
 
         MenuItem clear = new MenuItem("Clear");
-        MenuItem validBoard = new MenuItem("Is the board valid?");
+        MenuItem validBoard = new MenuItem("Is the board still playable?");
         MenuItem instructions = new MenuItem("Instructions");
 
-        clear.setOnAction(_ -> controller.clearMoves());
+        clear.setOnAction(_ -> menuControl.clearMoves());
         validBoard.setOnAction(_ -> {
-            if (controller.isBoardCorrect())
-                Notification.notify(Alert.AlertType.INFORMATION, "Hint", "Your board looks good so far!");
-            else Notification.notify(Alert.AlertType.ERROR, "Hint", "Your board is not correct.");
+            if (menuControl.isBoardCorrect())
+                Notification.notify(Alert.AlertType.INFORMATION, "Hint", "The board is playable");
+            else Notification.notify(Alert.AlertType.ERROR, "Hint", "The board is not playable");
         });
-        instructions.setOnAction(_ -> Notification.notify(Alert.AlertType.INFORMATION, "Instruktioner", controller.help()));
+        instructions.setOnAction(_ -> Notification.notify(Alert.AlertType.INFORMATION, "Instructions", menuControl.help()));
 
         help.getItems().addAll(clear, validBoard, instructions);
 

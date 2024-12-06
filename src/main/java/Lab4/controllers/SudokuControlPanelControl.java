@@ -1,10 +1,10 @@
 package Lab4.controllers;
 
-public class SudokuControlPanelController
+public class SudokuControlPanelControl
 {
     private final SudokuControl sudokuControl;
 
-    public SudokuControlPanelController(SudokuControl sudokuControl) {
+    public SudokuControlPanelControl(SudokuControl sudokuControl) {
         this.sudokuControl = sudokuControl;
     }
 
@@ -13,7 +13,7 @@ public class SudokuControlPanelController
      * @return Playability of the board
      */
     public boolean isBoardPlayable() {
-        return sudokuControl.isValid();
+        return sudokuControl.isPlayable();
     }
 
     /**

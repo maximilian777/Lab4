@@ -1,7 +1,6 @@
 package Lab4.models;
 
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class SudokuModel
@@ -116,7 +115,7 @@ public class SudokuModel
      * @return Game has been finished
      */
     public boolean hasWon() { return isBoardPlayable(false); }
-    public boolean isValid() { return isBoardPlayable(true); }
+    public boolean isPlayable() { return isBoardPlayable(true); }
 
     /**
      * Is the board still playable?
@@ -137,7 +136,7 @@ public class SudokuModel
 
         for (int gridRow = 0; gridRow < GRID_SIZE; gridRow++)
             for (int gridCol = 0; gridCol < GRID_SIZE; gridCol++)
-                if (!isSubgridValid(gridRow, gridCol, partial))
+                if (!isGridValid(gridRow, gridCol, partial))
                     return false;
         return true;
     }
@@ -171,7 +170,7 @@ public class SudokuModel
         return Arrays.equals(values, IntStream.rangeClosed(1, 9).toArray());
     }
 
-    private boolean isSubgridValid(int gridRow, int gridCol, boolean filter)
+    private boolean isGridValid(int gridRow, int gridCol, boolean filter)
     {
         int[] values = new int[SIZE];
         int index = 0;
@@ -183,17 +182,14 @@ public class SudokuModel
         Arrays.sort(values);
 
         if (filter) {
-            // Check for duplicates among non-zero values using a HashSet
             Set<Integer> uniqueValues = new HashSet<>();
             for (int value : values) {
                 if (value != 0 && !uniqueValues.add(value)) {
                     return false; // Duplicate found
                 }
             }
-            return true; // No duplicates found
+            return true;
         }
-
-        // Check if the subgrid contains exactly the numbers 1 through 9
         Arrays.sort(values);
         return Arrays.equals(values, IntStream.rangeClosed(1, 9).toArray());
     }
@@ -203,18 +199,20 @@ public class SudokuModel
      */
     public void giveHint()
     {
-        if (hasWon())
+        if (hasWon()) {
             return;
+        }
 
-        Random randNum = new Random();
-        int r, c;
-        do
-        {
-            r = randNum.nextInt(SIZE);
-            c = randNum.nextInt(SIZE);
-        } while (sudokuBoard[r][c].getValue() != 0);
+        Random random = new Random();
+        int row, col;
 
-        setTileObject(getTile(r, c), boardSolution[r][c].getValue());
+        do {
+            row = random.nextInt(SIZE);
+            col = random.nextInt(SIZE);
+        } while (sudokuBoard[row][col].getValue() != 0);
+
+        int correctValue = boardSolution[row][col].getValue();
+        setTileObject(getTile(row, col), correctValue);
     }
 
     /**
@@ -244,10 +242,6 @@ public class SudokuModel
         return false;
     }
 
-    /**
-     * Returns a list of a randomized sequence ranging from 1-9
-     * @return The list of randomized numbers
-     */
     private int[] getRandomizedNumbers()
     {
         return new Random().ints(1, 10)
@@ -265,11 +259,11 @@ public class SudokuModel
             }
         }
 
-        int subGridRowStart = (row / GRID_SIZE) * GRID_SIZE;
-        int subGridColStart = (col / GRID_SIZE) * GRID_SIZE;
+        int GridRowStart = (row / GRID_SIZE) * GRID_SIZE;
+        int GridColStart = (col / GRID_SIZE) * GRID_SIZE;
         for (int i = 0; i < GRID_SIZE; i++)
             for (int j = 0; j < GRID_SIZE; j++)
-                if (sudokuBoard[subGridRowStart + i][subGridColStart + j].getValue() == num)
+                if (sudokuBoard[GridRowStart + i][GridColStart + j].getValue() == num)
                     return false;
         return true;
     }
@@ -277,6 +271,7 @@ public class SudokuModel
     private void removeNumbers(int count)
     {
         Random randNum = new Random();
+
         for (int i = 0; i < count; i++)
         {
             int row, col;

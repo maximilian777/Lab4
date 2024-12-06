@@ -2,12 +2,12 @@ package Lab4.models;
 
 import Lab4.utils.FileManager;
 
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.FileChooser;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.io.File;
 import java.util.List;
 
 public class MenuModel
@@ -45,25 +45,24 @@ public class MenuModel
         for (SudokuTile[] row : sudokuBoard) {
             int[] rowValues = new int[row.length];
             for (int i = 0; i < row.length; i++) {
-                rowValues[i] = row[i].getValue(); // Extract integer value from each SudokuTile
+                rowValues[i] = row[i].getValue();
             }
-            x.add(rowValues); // Add the row of integers to the list
+            x.add(rowValues);
         }
 
         FileManager.saveSudoku(x.toArray(new int[0][]), file.getAbsolutePath());
     }
 
     /**
-     * Opens a file chooser and lets the user select a game to load
-     * @param stage The stage to open the file chooser to
-     * @return The board read from the file
+     * Opens a file dialog to allow the user to load a saved Sudoku game from a file
+     * @param stage Stage used to display the file chooser dialog.
+     * @return A 2D integer array representing the loaded Sudoku board
      */
     public int[][] loadGame(Stage stage) throws Exception
     {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File("."));
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sudoku save file (*.sudoku)", "*.sudoku"));
-
         File file = fileChooser.showOpenDialog(stage);
 
         if (file == null)
