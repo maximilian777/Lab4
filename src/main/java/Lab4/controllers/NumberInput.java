@@ -11,6 +11,6 @@ public class NumberInput
 
     public void setNumber(int num)
     {
-        sudokuControl.setValue(num);
+        sudokuControl.setNumber(num);
     }
 }

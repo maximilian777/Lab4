@@ -64,7 +64,6 @@ public class MenuModel
         fileChooser.setInitialDirectory(new File("."));
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sudoku save file (*.sudoku)", "*.sudoku"));
         File file = fileChooser.showOpenDialog(stage);
-
         if (file == null)
             return null;
         return FileManager.loadSudoku(file.getAbsolutePath());

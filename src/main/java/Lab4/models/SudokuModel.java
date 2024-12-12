@@ -201,17 +201,27 @@ public class SudokuModel
         if (hasWon()) {
             return;
         }
-
-        Random random = new Random();
-        int row, col;
-
-        do {
-            row = random.nextInt(SIZE);
-            col = random.nextInt(SIZE);
-        } while (board[row][col].getNumber() != 0);
-
-        int correctValue = boardSolution[row][col].getNumber();
-        setTile(getTile(row, col), correctValue);
+        List<int[]> emptyTiles = new ArrayList<>();
+        for (int row = 0; row < SIZE; row++) {
+            for (int col = 0; col < SIZE; col++) {
+                if (board[row][col].getNumber() == 0) {
+                    emptyTiles.add(new int[]{row, col});
+                }
+            }
+        }
+        if (emptyTiles.isEmpty()) {
+            return;
+        }
+        Collections.shuffle(emptyTiles);
+        for (int[] position : emptyTiles) {
+            int row = position[0];
+            int col = position[1];
+            int correctValue = boardSolution[row][col].getNumber();
+            if (isPlacementValid(correctValue, row, col)) {
+                setTile(board[row][col], correctValue);
+                return;
+            }
+        }
     }
 
     /**
@@ -238,11 +248,22 @@ public class SudokuModel
         return false;
     }
 
+    /**
+     * Generates an array of randomized numbers from 1 to 9
+     * @return An array of numbers in random order
+     */
     private int[] getRandomizedNumbers()
     {
-        return new Random().ints(1, 10).distinct().limit(9).sorted().toArray();
+        return new Random().ints(1, 10).distinct().limit(9).toArray();
     }
 
+    /**
+     * Checks if placing a number at a specific position is valid
+     * @param num The number to place
+     * @param row The row index
+     * @param col The column index
+     * @return True if the placement is valid, false otherwise
+     */
     private boolean isPlacementValid(int num, int row, int col)
     {
         for (int i = 0; i < SIZE; i++) {
@@ -260,10 +281,13 @@ public class SudokuModel
         return true;
     }
 
+    /**
+     * Removes a specified number of tiles from the board by setting them to zero
+     * @param count The number of tiles to remove
+     */
     private void removeNumbers(int count)
     {
         Random randNum = new Random();
-
         for (int i = 0; i < count; i++)
         {
             int row, col;
@@ -293,11 +317,9 @@ public class SudokuModel
 
         for (int num = 1; num <= SIZE; num++)
         {
-            if (!isPlacementValid(num, row, col))
-                continue;
+            if (!isPlacementValid(num, row, col)) continue;
             boardSolution[row][col].setNumber(num);
-            if (solutionBacktrackMethod(row, col + 1))
-                return true;
+            if (solutionBacktrackMethod(row, col + 1)) return true;
             boardSolution[row][col].setNumber(0);
         }
         return false;

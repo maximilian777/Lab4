@@ -17,7 +17,7 @@ public class SudokuControl
     /**
      * Sets a number to the highlighted tile
      * @param tile The highlighted tile
-     * @return Can you set the tile?
+     * @return Are you able to set the tile?
      */
     public boolean setTile(Tile tile)
     {
@@ -35,10 +35,10 @@ public class SudokuControl
      */
     public Tile getTileAt(int row, int col) { return sudokuModel.getTile(row, col); }
 
-    public void setValue(int value)
+    public void setNumber(int number)
     {
         if (tile != null)
-            sudokuModel.setTile(tile, value);
+            sudokuModel.setTile(tile, number);
         tile = null;
     }
 
@@ -56,14 +56,14 @@ public class SudokuControl
     public boolean isPlayable() { return sudokuModel.isPlayable(); }
 
     /**
-     * Clears all the users' previous moves
+     * Clears all the user made moves
      */
     public void clearMoves() {
         sudokuModel.clearMoves();
     }
 
     /**
-     * Has the board won?
+     * Has the game been won?
      * @return a Win
      */
     public boolean hasWon() {
