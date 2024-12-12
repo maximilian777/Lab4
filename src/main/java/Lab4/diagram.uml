@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="32.5" y="559.0">controllers.Lab4.SudokuControlPanelController</node>
+    <node x="282.0" y="559.0">controllers.Lab4.MenuController</node>
+    <node x="170.5" y="639.0">controllers.Lab4.NumberInputController</node>
+    <node x="349.0" y="429.5">models.Lab4.Difficulty</node>
+    <node x="142.0" y="-10.5">models.Lab4.SudokuTile</node>
+    <node x="-40.5" y="649.5">views.Lab4.SudokuView</node>
+    <node x="130.0" y="142.5">models.Lab4.SudokuModel</node>
+    <node x="30.0" y="401.0">controllers.Lab4.SudokuController</node>
+    <node x="261.0" y="349.5">models.Lab4.MenuModel</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="controllers.Lab4.MenuController" target="models.Lab4.MenuModel" relationship="TO_ONE">
+      <point x="0.0" y="-21.0" />
+      <point x="350.0" y="520.0" />
+      <point x="310.0" y="520.0" />
+      <point x="0.0" y="10.5" />
+    </edge>
+    <edge source="controllers.Lab4.NumberInputController" target="controllers.Lab4.SudokuController" relationship="TO_ONE">
+      <point x="0.0" y="-21.0" />
+      <point x="250.0" y="520.0" />
+      <point x="10.0" y="520.0" />
+      <point x="10.0" y="380.0" />
+      <point x="110.0" y="380.0" />
+      <point x="0.0" y="-39.0" />
+    </edge>
+    <edge source="controllers.Lab4.SudokuController" target="models.Lab4.SudokuTile" relationship="TO_ONE">
+      <point x="0.0" y="-39.0" />
+      <point x="110.0" y="100.0" />
+      <point x="170.0" y="100.0" />
+      <point x="170.0" y="80.0" />
+      <point x="166.0" y="80.0" />
+      <point x="-24.0" y="30.5" />
+    </edge>
+    <edge source="controllers.Lab4.SudokuController" target="models.Lab4.SudokuModel" relationship="TO_ONE">
+      <point x="0.0" y="-39.0" />
+      <point x="110.0" y="320.0" />
+      <point x="310.0" y="320.0" />
+      <point x="310.0" y="120.0" />
+      <point x="170.0" y="120.0" />
+      <point x="-40.0" y="-57.5" />
+    </edge>
+    <edge source="controllers.Lab4.SudokuControlPanelController" target="controllers.Lab4.SudokuController" relationship="TO_ONE">
+      <point x="0.0" y="-21.0" />
+      <point x="130.0" y="520.0" />
+      <point x="10.0" y="520.0" />
+      <point x="10.0" y="380.0" />
+      <point x="110.0" y="380.0" />
+      <point x="0.0" y="-39.0" />
+    </edge>
+    <edge source="models.Lab4.SudokuModel" target="models.Lab4.SudokuTile" relationship="CREATE">
+      <point x="40.0" y="-57.5" />
+      <point x="250.0" y="100.0" />
+      <point x="214.0" y="100.0" />
+      <point x="24.0" y="30.5" />
+    </edge>
+    <edge source="controllers.Lab4.MenuController" target="controllers.Lab4.SudokuController" relationship="TO_ONE">
+      <point x="0.0" y="-21.0" />
+      <point x="350.0" y="520.0" />
+      <point x="310.0" y="520.0" />
+      <point x="310.0" y="500.0" />
+      <point x="10.0" y="500.0" />
+      <point x="10.0" y="380.0" />
+      <point x="110.0" y="380.0" />
+      <point x="0.0" y="-39.0" />
+    </edge>
+    <edge source="views.Lab4.SudokuView" target="controllers.Lab4.SudokuController" relationship="TO_ONE">
+      <point x="0.0" y="-10.5" />
+      <point x="10.0" y="380.0" />
+      <point x="110.0" y="380.0" />
+      <point x="0.0" y="-39.0" />
+    </edge>
+    <edge source="models.Lab4.SudokuModel" target="models.Lab4.SudokuTile" relationship="TO_MANY">
+      <point x="-40.0" y="-57.5" />
+      <point x="170.0" y="80.0" />
+      <point x="166.0" y="80.0" />
+      <point x="-24.0" y="30.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Compact" zoom="1.047752808988764" showDependencies="true" x="204.99999999999994" y="345.0" />
+  <SelectedNodes>
+    <node>models.Lab4.Difficulty</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
