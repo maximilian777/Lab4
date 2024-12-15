@@ -40,7 +40,7 @@ public class SudokuApp extends Application
         root.setRight(numberInputView);
 
         Scene scene = new Scene(root, 600, 700);
-        stage.setTitle("Best Sudoku");
+        stage.setTitle("Sudoku");
         stage.setScene(scene);
         stage.show();
     }

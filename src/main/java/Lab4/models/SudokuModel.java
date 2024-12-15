@@ -127,10 +127,10 @@ public class SudokuModel
         {
             if (!isAreaPlayable(i, partial, true))
                 return false;
-            System.out.println("Row valid");
+            System.out.println("Row playable");
             if (!isAreaPlayable(i, partial, false))
                 return false;
-            System.out.println("Col valid");
+            System.out.println("Col playable");
         }
 
         for (int gridRow = 0; gridRow < GRID_SIZE; gridRow++)
@@ -141,56 +141,56 @@ public class SudokuModel
     }
 
     /**
-     * Checks if a row or column is valid
+     * Checks if a row or column is playable
      * @param index Row or column
-     * @param filter Check for validity or for a win
+     * @param filter Check for playability or for a win
      * @param isRow Checks a row or column
-     * @return Validity of the region
+     * @return Playability of the region
      */
     private boolean isAreaPlayable(int index, boolean filter, boolean isRow)
     {
-        int[] values = new int[SIZE];
+        int[] numbers = new int[SIZE];
 
         for (int i = 0; i < SIZE; i++)
-            values[i] = isRow ? board[index][i].getNumber() : board[i][index].getNumber();
+            numbers[i] = isRow ? board[index][i].getNumber() : board[i][index].getNumber();
 
-        Arrays.sort(values);
+        Arrays.sort(numbers);
 
         if (filter) {
             Set<Integer> uniqueValues = new HashSet<>();
-            for (int value : values) {
+            for (int value : numbers) {
                 if (value != 0 && !uniqueValues.add(value)) {
                     return false;
                 }
             }
             return true;
         }
-        Arrays.sort(values);
-        return Arrays.equals(values, IntStream.rangeClosed(1, 9).toArray());
+        Arrays.sort(numbers);
+        return Arrays.equals(numbers, IntStream.rangeClosed(1, 9).toArray());
     }
 
     private boolean isGridPlayable(int gridRow, int gridCol, boolean filter)
     {
-        int[] values = new int[SIZE];
+        int[] numbers = new int[SIZE];
         int index = 0;
 
         for (int row = 0; row < GRID_SIZE; row++)
             for (int col = 0; col < GRID_SIZE; col++)
-                values[index++] = board[gridRow * GRID_SIZE + row][gridCol * GRID_SIZE + col].getNumber();
+                numbers[index++] = board[gridRow * GRID_SIZE + row][gridCol * GRID_SIZE + col].getNumber();
 
-        Arrays.sort(values);
+        Arrays.sort(numbers);
 
         if (filter) {
-            Set<Integer> uniqueValues = new HashSet<>();
-            for (int value : values) {
-                if (value != 0 && !uniqueValues.add(value)) {
+            Set<Integer> uniqueNumbers = new HashSet<>();
+            for (int number : numbers) {
+                if (number != 0 && !uniqueNumbers.add(number)) {
                     return false;
                 }
             }
             return true;
         }
-        Arrays.sort(values);
-        return Arrays.equals(values, IntStream.rangeClosed(1, 9).toArray());
+        Arrays.sort(numbers);
+        return Arrays.equals(numbers, IntStream.rangeClosed(1, 9).toArray());
     }
 
     /**
