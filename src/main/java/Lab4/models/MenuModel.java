@@ -49,7 +49,7 @@ public class MenuModel
             x.add(rowValues);
         }
 
-        FileManager.saveSudoku(x.toArray(new int[0][]), file.getAbsolutePath());
+        FileManager.saveBoard(x.toArray(new int[0][]), file.getAbsolutePath());
     }
 
     /**
@@ -66,6 +66,6 @@ public class MenuModel
         File file = fileChooser.showOpenDialog(stage);
         if (file == null)
             return null;
-        return FileManager.loadSudoku(file.getAbsolutePath());
+        return FileManager.loadBoard(file.getAbsolutePath());
     }
 }

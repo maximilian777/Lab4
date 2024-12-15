@@ -135,7 +135,7 @@ public class SudokuModel
 
         for (int gridRow = 0; gridRow < GRID_SIZE; gridRow++)
             for (int gridCol = 0; gridCol < GRID_SIZE; gridCol++)
-                if (!isGridValid(gridRow, gridCol, partial))
+                if (!isGridPlayable(gridRow, gridCol, partial))
                     return false;
         return true;
     }
@@ -169,7 +169,7 @@ public class SudokuModel
         return Arrays.equals(values, IntStream.rangeClosed(1, 9).toArray());
     }
 
-    private boolean isGridValid(int gridRow, int gridCol, boolean filter)
+    private boolean isGridPlayable(int gridRow, int gridCol, boolean filter)
     {
         int[] values = new int[SIZE];
         int index = 0;
@@ -184,7 +184,7 @@ public class SudokuModel
             Set<Integer> uniqueValues = new HashSet<>();
             for (int value : values) {
                 if (value != 0 && !uniqueValues.add(value)) {
-                    return false; // Duplicate found
+                    return false;
                 }
             }
             return true;
