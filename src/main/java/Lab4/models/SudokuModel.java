@@ -157,9 +157,9 @@ public class SudokuModel
         Arrays.sort(numbers);
 
         if (filter) {
-            Set<Integer> uniqueValues = new HashSet<>();
-            for (int value : numbers) {
-                if (value != 0 && !uniqueValues.add(value)) {
+            Set<Integer> uniqueNumbers = new HashSet<>();
+            for (int number : numbers) {
+                if (number != 0 && !uniqueNumbers.add(number)) {
                     return false;
                 }
             }
