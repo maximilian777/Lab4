@@ -1,6 +1,8 @@
 package Lab4.models;
 
 import javafx.beans.value.ObservableValue;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
@@ -9,14 +11,15 @@ import java.io.Serializable;
 
 public class Tile extends Label implements Serializable
 {
-    private int number;
+    private final IntegerProperty number;
 
-    Tile()
+    public Tile()
     {
-        setFont(Font.font(20));
-        setAlignment(Pos.CENTER);
-        setStyle("-fx-border-color: black; -fx-border-width: 0.5px;");
-        setPrefSize(40, 40);
+        this.number = new SimpleIntegerProperty(0);
+        //setFont(Font.font(20));
+        //setAlignment(Pos.CENTER);
+        //setStyle("-fx-border-color: black; -fx-border-width: 0.5px;");
+        //setPrefSize(40, 40);
     }
 
     /**
@@ -32,11 +35,15 @@ public class Tile extends Label implements Serializable
 
     public void setNumber(int num)
     {
-        this.number = num;
-        setText(number == 0 ? "" : String.valueOf(number));
+        this.number.set(num);
+        //setText(number == 0 ? "" : String.valueOf(number));
     }
 
     public int getNumber() {
+        return number.get();
+    }
+
+    public IntegerProperty numberProperty() {
         return number;
     }
 }

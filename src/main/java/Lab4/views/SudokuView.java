@@ -4,6 +4,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.scene.control.Label;
 
 import Lab4.controllers.SudokuControl;
 import Lab4.models.Tile;
@@ -40,25 +41,52 @@ public class SudokuView extends GridPane
                 {
                     for (int col = 0; col < SECTION_SIZE; col++)
                     {
-                        var w = section.widthProperty().divide(SECTION_SIZE);
-                        var h = section.heightProperty().divide(SECTION_SIZE);
-
                         Tile tile = controller.getTileAt(srow * SECTION_SIZE + row, scol * SECTION_SIZE + col);
-                        tile.setFont(Font.font("monospace", 24));
-                        tile.bind(w, h);
-                        tile.setOnMouseClicked(_ -> {
-                            if (controller.setTile(tile))
-                                return;
-                            if (controller.hasWon())
-                                Notification.notify(Alert.AlertType.INFORMATION, "Results", "You won!");
-                            else Notification.notify(Alert.AlertType.ERROR, "Results", "You lost. :(");
-                        });
-
+                        Label tileLabel = createTileLabel(tile);
+                        tileLabel.setOnMouseClicked(event -> handleTileClick(tile));
+                        section.add(tileLabel, col, row);
                         section.add(tile, col, row);
                     }
                 }
                 add(section, scol, srow);
             }
         }
+    }
+
+    private GridPane createSection() {
+        GridPane section = new GridPane();
+        section.prefWidthProperty().bind(stage.widthProperty().divide(3));
+        section.prefHeightProperty().bind(stage.heightProperty().divide(3));
+        section.setStyle("-fx-border-color: black; -fx-border-width: 1px;");
+        return section;
+    }
+
+    private Label createTileLabel(Tile tile) {
+        Label label = new Label();
+        label.setFont(Font.font("monospace", 24));
+        label.setStyle("-fx-border-color: black; -fx-border-width: 0.5px; -fx-alignment: center;");
+        label.prefWidthProperty().bind(this.widthProperty().divide(9));
+        label.prefHeightProperty().bind(this.heightProperty().divide(9));
+
+        label.textProperty().bind(tile.numberProperty().asString().map(num -> num.equals("0") ? "" : num));
+
+        return label;
+    }
+
+    private void handleTileClick(Tile tile) {
+        if (controller.setTile(tile)) return;
+
+        if (controller.hasWon()) {
+            notifyUser(Alert.AlertType.INFORMATION, "Results", "You won!");
+        } else {
+            notifyUser(Alert.AlertType.ERROR, "Results", "You lost. :(");
+        }
+    }
+
+    private void notifyUser(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
