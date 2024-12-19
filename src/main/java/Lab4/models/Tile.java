@@ -1,42 +1,22 @@
 package Lab4.models;
 
-import javafx.beans.value.ObservableValue;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.geometry.Pos;
-import javafx.scene.control.Label;
-import javafx.scene.text.Font;
-
 import java.io.Serializable;
 
-public class Tile extends Label implements Serializable
-{
+public class Tile implements Serializable {
     private final IntegerProperty number;
+    private final BooleanProperty immutable;
 
-    public Tile()
-    {
+    public Tile() {
         this.number = new SimpleIntegerProperty(0);
-        //setFont(Font.font(20));
-        //setAlignment(Pos.CENTER);
-        //setStyle("-fx-border-color: black; -fx-border-width: 0.5px;");
-        //setPrefSize(40, 40);
+        this.immutable = new SimpleBooleanProperty(false);
     }
 
-    /**
-     * Label size values
-     * @param width The width
-     * @param height The height
-     */
-    public void bind(ObservableValue width, ObservableValue height)
-    {
-        prefWidthProperty().bind(width);
-        prefHeightProperty().bind(height);
-    }
-
-    public void setNumber(int num)
-    {
+    public void setNumber(int num) {
         this.number.set(num);
-        //setText(number == 0 ? "" : String.valueOf(number));
     }
 
     public int getNumber() {
@@ -45,5 +25,17 @@ public class Tile extends Label implements Serializable
 
     public IntegerProperty numberProperty() {
         return number;
+    }
+
+    public boolean isImmutable() {
+        return immutable.get();
+    }
+
+    public void setImmutable(boolean immutable) {
+        this.immutable.set(immutable);
+    }
+
+    public BooleanProperty immutableProperty() {
+        return immutable;
     }
 }

@@ -10,14 +10,12 @@ public class SudokuModel
     private boolean initialization = false;
 
     private final Tile[][] board;
-    private final Tile[][] boardSolution;
     private final Set<Tile> presetMoves = new HashSet<>();
     private final Set<Tile> previousMoves = new HashSet<>();
 
     public SudokuModel()
     {
         this.board = new Tile[SIZE][SIZE];
-        this.boardSolution = new Tile[SIZE][SIZE];
         newGame(Difficulty.MEDIUM);
         initialization = true;
     }
@@ -49,15 +47,15 @@ public class SudokuModel
         return board;
     }
 
-    public void setBoard(int[][] board)
-    {
-        for (int i = 0; i < 9; i++)
-        {
-            for (int j = 0; j < 9; j++)
-            {
-                if (board[i][j] != 0)
-                    presetMoves.add(this.board[i][j]);
+    public void setBoard(int[][] board) {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
                 this.board[i][j].setNumber(board[i][j]);
+                boolean isPreset = board[i][j] != 0;
+                this.board[i][j].setImmutable(isPreset);
+                if (isPreset) {
+                    presetMoves.add(this.board[i][j]);
+                }
             }
         }
     }
@@ -77,36 +75,52 @@ public class SudokuModel
      * Initializes a new game
      * @param difficulty Sets the difficulty
      */
-    public void newGame(Difficulty difficulty)
-    {
+    public void newGame(Difficulty difficulty) {
+        if (!initialization) {
+            IntStream.range(0, SIZE).forEach(i ->
+                    IntStream.range(0, SIZE).forEach(j -> {
+                        this.board[i][j] = new Tile();
+                    })
+            );
+            initialization = true;
+        }
+        resetImmutability();
         IntStream.range(0, SIZE).forEach(i ->
                 IntStream.range(0, SIZE).forEach(j -> {
-                    if (initialization) {
-                        this.board[i][j].setNumber(0);
-                        this.boardSolution[i][j].setNumber(0);
-                    } else {
-                        this.board[i][j] = new Tile();
-                        this.boardSolution[i][j] = new Tile();
-                    }
+                    this.board[i][j].setNumber(0);
                 })
         );
+        fillBoard(0, 0);
+        int tilesToRemove = removeTilesByDifficulty(difficulty);
+        removeNumbers(tilesToRemove);
+        markPresetTilesAsImmutable();
+    }
 
-        switch (difficulty)
-        {
-            case EASY:
-                fillBoard(0, 0);
-                removeNumbers(25);
-                break;
-            case MEDIUM:
-                fillBoard(0, 0);
-                removeNumbers(45);
-                break;
-            case HARD:
-                fillBoard(0, 0);
-                removeNumbers(65);
-                break;
+    private void markPresetTilesAsImmutable() {
+        for (int row = 0; row < SIZE; row++) {
+            for (int col = 0; col < SIZE; col++) {
+                if (board[row][col].getNumber() != 0) {
+                    board[row][col].setImmutable(true);
+                }
+            }
         }
-        solutionBacktrackMethod(0, 0);
+    }
+
+    private void resetImmutability() {
+        for (int row = 0; row < SIZE; row++) {
+            for (int col = 0; col < SIZE; col++) {
+                board[row][col].setImmutable(false);  // Reset immutability
+            }
+        }
+    }
+
+    private int removeTilesByDifficulty(Difficulty difficulty) {
+        return switch (difficulty) {
+            case EASY -> 25;
+            case MEDIUM -> 45;
+            case HARD -> 65;
+            default -> throw new IllegalArgumentException("Unknown difficulty: " + difficulty);
+        };
     }
 
     /**
@@ -209,6 +223,7 @@ public class SudokuModel
                 }
             }
         }
+
         if (emptyTiles.isEmpty()) {
             return;
         }
@@ -216,10 +231,11 @@ public class SudokuModel
         for (int[] position : emptyTiles) {
             int row = position[0];
             int col = position[1];
-            int correctValue = boardSolution[row][col].getNumber();
-            if (isPlacementValid(correctValue, row, col)) {
-                setTile(board[row][col], correctValue);
-                return;
+            for (int num = 1; num <= SIZE; num++) {
+                if (isPlacementValid(num, row, col)) {
+                    setTile(board[row][col], num);
+                    return;
+                }
             }
         }
     }
@@ -306,8 +322,7 @@ public class SudokuModel
      * @param col Initial column
      * @return Has the board been solved?
      */
-    private boolean solutionBacktrackMethod(int row, int col)
-    {
+    private boolean solutionBacktrackMethod(int row, int col) {
         if (row == SIZE)
             return true;
         if (col == SIZE)
@@ -315,12 +330,11 @@ public class SudokuModel
         if (board[row][col].getNumber() != 0)
             return solutionBacktrackMethod(row, col + 1);
 
-        for (int num = 1; num <= SIZE; num++)
-        {
+        for (int num = 1; num <= SIZE; num++) {
             if (!isPlacementValid(num, row, col)) continue;
-            boardSolution[row][col].setNumber(num);
+            board[row][col].setNumber(num);
             if (solutionBacktrackMethod(row, col + 1)) return true;
-            boardSolution[row][col].setNumber(0);
+            board[row][col].setNumber(0);
         }
         return false;
     }

@@ -19,10 +19,13 @@ public class SudokuControl
      * @param tile The highlighted tile
      * @return Are you able to set the tile?
      */
-    public boolean setTile(Tile tile)
-    {
-        if (sudokuModel.isGameOver())
+    public boolean setTile(Tile tile) {
+        if (sudokuModel.isGameOver()) {
             return false;
+        }
+        if (tile.isImmutable()) {
+            return false;
+        }
         this.tile = tile;
         return true;
     }

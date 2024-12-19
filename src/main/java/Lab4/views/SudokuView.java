@@ -5,12 +5,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
-
 import Lab4.controllers.SudokuControl;
 import Lab4.models.Tile;
 
-public class SudokuView extends GridPane
-{
+public class SudokuView extends GridPane {
     private final SudokuControl controller;
     private final Stage stage;
 
@@ -20,32 +18,22 @@ public class SudokuView extends GridPane
         drawBoard();
     }
 
-    private void drawBoard()
-    {
+    private void drawBoard() {
         setStyle("-fx-padding: 15px;");
 
         int SECTIONS_PER_ROW = 3;
-        for (int srow = 0; srow < SECTIONS_PER_ROW; srow++)
-        {
-            for (int scol = 0; scol < SECTIONS_PER_ROW; scol++)
-            {
-                GridPane section = new GridPane();
-
-                section.prefWidthProperty().bind(stage.widthProperty().divide(SECTIONS_PER_ROW));
-                section.prefHeightProperty().bind(stage.heightProperty().divide(SECTIONS_PER_ROW));
-
-                section.setStyle("-fx-border-color: black; -fx-border-width: 1px;");
+        for (int srow = 0; srow < SECTIONS_PER_ROW; srow++) {
+            for (int scol = 0; scol < SECTIONS_PER_ROW; scol++) {
+                GridPane section = createSection();
 
                 int SECTION_SIZE = 3;
-                for (int row = 0; row < SECTION_SIZE; row++)
-                {
-                    for (int col = 0; col < SECTION_SIZE; col++)
-                    {
+                for (int row = 0; row < SECTION_SIZE; row++) {
+                    for (int col = 0; col < SECTION_SIZE; col++) {
                         Tile tile = controller.getTileAt(srow * SECTION_SIZE + row, scol * SECTION_SIZE + col);
                         Label tileLabel = createTileLabel(tile);
+
                         tileLabel.setOnMouseClicked(event -> handleTileClick(tile));
                         section.add(tileLabel, col, row);
-                        section.add(tile, col, row);
                     }
                 }
                 add(section, scol, srow);
@@ -67,19 +55,32 @@ public class SudokuView extends GridPane
         label.setStyle("-fx-border-color: black; -fx-border-width: 0.5px; -fx-alignment: center;");
         label.prefWidthProperty().bind(this.widthProperty().divide(9));
         label.prefHeightProperty().bind(this.heightProperty().divide(9));
-
         label.textProperty().bind(tile.numberProperty().asString().map(num -> num.equals("0") ? "" : num));
+
+        tile.immutableProperty().addListener((obs, wasImmutable, isImmutable) -> {
+            if (isImmutable) {
+                label.setStyle("-fx-border-color: black; -fx-border-width: 0.5px; -fx-alignment: center;");
+            } else {
+                label.setStyle("-fx-border-color: black; -fx-border-width: 0.5px; -fx-alignment: center;");
+            }
+        });
 
         return label;
     }
 
     private void handleTileClick(Tile tile) {
-        if (controller.setTile(tile)) return;
+        if (tile.isImmutable()) {
+            return;
+        }
 
-        if (controller.hasWon()) {
-            notifyUser(Alert.AlertType.INFORMATION, "Results", "You won!");
-        } else {
-            notifyUser(Alert.AlertType.ERROR, "Results", "You lost. :(");
+        if (controller.setTile(tile)) {
+            if (controller.hasWon()) {
+                notifyUser(Alert.AlertType.INFORMATION, "Results", "You won!");
+            } else if (controller.isPlayable()) {
+                return; // Game is still playable, so no loss message is shown
+            } else {
+                notifyUser(Alert.AlertType.ERROR, "Results", "You lost. :(");
+            }
         }
     }
 
