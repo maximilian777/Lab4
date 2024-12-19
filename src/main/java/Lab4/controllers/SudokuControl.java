@@ -77,4 +77,8 @@ public class SudokuControl
      * Gives a hint to the player, by inserting a correct answer to a tile.
      */
     public void giveHint() { sudokuModel.giveHint(); }
+
+    public boolean isGameOver() {
+        return sudokuModel.isGameOver();
+    }
 }

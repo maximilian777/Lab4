@@ -76,9 +76,7 @@ public class SudokuView extends GridPane {
         if (controller.setTile(tile)) {
             if (controller.hasWon()) {
                 notifyUser(Alert.AlertType.INFORMATION, "Results", "You won!");
-            } else if (controller.isPlayable()) {
-                return; // Game is still playable, so no loss message is shown
-            } else {
+            } else if (!controller.isPlayable() && controller.isGameOver()) {
                 notifyUser(Alert.AlertType.ERROR, "Results", "You lost. :(");
             }
         }

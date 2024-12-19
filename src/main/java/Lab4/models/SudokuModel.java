@@ -96,6 +96,9 @@ public class SudokuModel
         markPresetTilesAsImmutable();
     }
 
+    /**
+     * Marks all preset tiles as immutable
+     */
     private void markPresetTilesAsImmutable() {
         for (int row = 0; row < SIZE; row++) {
             for (int col = 0; col < SIZE; col++) {
@@ -106,14 +109,23 @@ public class SudokuModel
         }
     }
 
+    /**
+     * Resets immutability for all tiles
+     */
     private void resetImmutability() {
         for (int row = 0; row < SIZE; row++) {
             for (int col = 0; col < SIZE; col++) {
-                board[row][col].setImmutable(false);  // Reset immutability
+                board[row][col].setImmutable(false);
             }
         }
     }
 
+    /**
+     * Determines the number of tiles to be removed based on the selected difficulty level
+     * @param difficulty The selected difficulty level.
+     * @return The number of tiles to be removed based on the given difficulty.
+     * @throws IllegalArgumentException if the difficulty level is unknown.
+     */
     private int removeTilesByDifficulty(Difficulty difficulty) {
         return switch (difficulty) {
             case EASY -> 25;
@@ -127,7 +139,9 @@ public class SudokuModel
      * Has the game been finished?
      * @return Game has been finished
      */
-    public boolean hasWon() { return isBoardPlayable(false); }
+    public boolean hasWon() {
+        return isBoardPlayable(false) && isGameOver();
+    }
     public boolean isPlayable() { return isBoardPlayable(true); }
 
     /**
